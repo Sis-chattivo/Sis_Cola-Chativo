@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/html.html to edit this template
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chattivo - Iniciar Sesión</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="10" y="20" font-size="20" fill="%23ddd">🎮</text><text x="40" y="50" font-size="15" fill="%23ddd">👾</text><text x="70" y="80" font-size="18" fill="%23ddd">🎨</text><text x="20" y="70" font-size="16" fill="%23ddd">🎵</text></svg>');
+            background-color: #e8e8e8;
+            background-blend-mode: overlay;
+        }
+
+        .login-container {
+            background: rgba(180, 180, 180, 0.95);
+            padding: 40px 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 420px;
+            max-width: 90%;
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bubble {
+            width: 60px;
+            height: 60px;
+            background: #5a5a5a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 26px;
+        }
+
+        .bubble:first-child {
+            background: #8a8a8a;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            color: #ffffff;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .social-btn {
+            width: 85px;
+            height: 70px;
+            border: none;
+            border-radius: 12px;
+            background: #a0a0a0;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-btn img {
+            width: 42px;
+            height: 42px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #ffffff;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #ffffff;
+        }
+
+        .divider span {
+            padding: 0 15px;
+            font-size: 14px;
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 13px 45px 13px 18px;
+            border: none;
+            border-radius: 10px;
+            background: #a0a0a0;
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-field::placeholder {
+            color: #d0d0d0;
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 24px;
+            color: #ffffff;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: #4a4a4a;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .login-btn:hover {
+            background: #3a3a3a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="chat-icon">
+            <div class="bubble">💬</div>
+        </div>
+        
+        <h1>Chattivo</h1>
+        <h2>¡Bienvenido!</h2>
+        <p class="subtitle">Elige para iniciar sesión</p>
+        
+        <div class="social-buttons">
+            <button class="social-btn" onclick="loginWithProvider('facebook')">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%231877F2' d='M24 4C12.95 4 4 12.95 4 24c0 10 7.35 18.26 16.95 19.74v-14h-5.1V24h5.1v-3.86c0-5.04 3-7.82 7.59-7.82 2.2 0 4.5.39 4.5.39v4.95h-2.54c-2.5 0-3.28 1.55-3.28 3.14V24h5.58l-.89 5.74h-4.69v14C36.65 42.26 44 34 44 24c0-11.05-8.95-20-20-20z'/%3E%3C/svg%3E" alt="Facebook">
+            </button>
+            <button class="social-btn" onclick="loginWithProvider('google')">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%234285F4' d='M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z'/%3E%3Cpath fill='%2334A853' d='M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z'/%3E%3Cpath fill='%23FBBC05' d='M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z'/%3E%3Cpath fill='%23EA4335' d='M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z'/%3E%3C/svg%3E" alt="Google">
+            </button>
+            <button class="social-btn" onclick="loginWithProvider('microsoft')">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23ff5722' d='M6 6h18v18H6z'/%3E%3Cpath fill='%234caf50' d='M26 6h18v18H26z'/%3E%3Cpath fill='%23ffc107' d='M6 26h18v18H6z'/%3E%3Cpath fill='%2303a9f4' d='M26 26h18v18H26z'/%3E%3C/svg%3E" alt="Microsoft">
+            </button>
+        </div>
+        
+        <div class="divider">
+            <span>o inicia sesión con nombre</span>
+        </div>
+        
+        <form onsubmit="loginWithUsername(event)">
+            <div class="input-container">
+                <input type="text" class="input-field" id="username" placeholder="Nombre de usuario" required>
+            </div>
+            
+            <button type="submit" class="login-btn">acceder</button>
+        </form>
+    </div>
+
+    <script>
+        function loginWithProvider(provider) {
+            // Guardar el método de login
+            localStorage.setItem('loginMethod', provider);
+            localStorage.setItem('username', provider + '_user');
+            
+            // Simular autenticación y redirigir
+            alert('Iniciando sesión con ' + provider.charAt(0).toUpperCase() + provider.slice(1) + '...');
+            window.location.href = 'main.html';
+        }
+
+        function loginWithUsername(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            
+            if (username.trim()) {
+                localStorage.setItem('loginMethod', 'username');
+                localStorage.setItem('username', username);
+                
+                // Redirigir a la página principal
+                window.location.href = 'main.html';
+            }
+        }
+
+        // Verificar si ya está logueado
+        window.onload = function() {
+            if (localStorage.getItem('username')) {
+                window.location.href = 'main.html';
+            }
+        };
+    </script>
+</body>
+</html>
