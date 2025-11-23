@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chattivo - Chat</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <header>
+        <h1>Chattivo</h1>
+        <div class="user-info">
+            <span id="username"></span>
+            <button id="logoutBtn">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <input type="text" id="searchBox" placeholder="Buscar grupo">
+            <div id="groupsList"></div>
+            <button id="createGroupBtn">Crear Grupo</button>
+            <button id="joinGroupBtn">Unirse a Grupo</button>
+        </aside>
+
+        <section class="chat-container">
+            <div class="chat-header" id="chatHeader">Selecciona un grupo</div>
+            <div class="messages-container" id="messagesContainer">
+                <p class="empty-chat">Selecciona un grupo para comenzar a chatear</p>
+            </div>
+            <div class="input-container" id="inputContainer">
+                <input type="text" id="messageInput" placeholder="Escribe un mensaje...">
+                <button id="sendBtn">Enviar</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal simple -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle"></h2>
+            <input type="text" id="modalInput" placeholder="Nombre del grupo">
+            <button id="modalConfirm">Aceptar</button>
+            <button id="modalCancel">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>
