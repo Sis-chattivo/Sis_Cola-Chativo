@@ -62,6 +62,9 @@ button:hover {
     border-radius: 6px;
     margin-bottom: 5px;
     cursor: pointer;
+    display: flex;
+   justify-content: space-between;
+   align-items: center;
 }
 
 .group-item:hover, .group-item.active {
@@ -85,6 +88,8 @@ button:hover {
     flex: 1;
     padding: 15px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .message {
@@ -92,6 +97,10 @@ button:hover {
     border-radius: 8px;
     margin-bottom: 10px;
     max-width: 60%;
+     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 }
 
 .message.sent {
@@ -149,4 +158,68 @@ button:hover {
     padding: 8px;
     border-radius: 6px;
     border: 1px solid #ccc;
+}
+/* Botón modo eliminar */
+.delete-mode-btn {
+    background: #95a5a6;
+    font-size: 18px;
+    padding: 8px 12px;
+    margin-left: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    transition: all 0.3s;
+}
+.delete-mode-btn.active {
+    background: #5a6568;
+    box-shadow: 0 0 10px rgba(90, 101, 104, 0.8);
+}
+
+.delete-mode-btn:hover {
+    transform: scale(1.1);
+}
+
+
+
+/* Items en modo eliminar */
+.group-item.delete-mode {
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.group-item.delete-mode:hover {
+    background: #b0b0b0 !important;
+    border: 2px solid #5a6568;
+    transform: scale(0.98);
+}
+.message.delete-mode {
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.message.delete-mode:hover {
+    transform: scale(0.98);
+    box-shadow: 0 0 15px rgba(90, 101, 104, 0.6);
+    border: 2px solid #5a6568;
+}
+
+/* Ajustes al chat header */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Ajustes a sidebar header */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    font-size: 16px;
 }

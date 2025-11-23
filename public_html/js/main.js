@@ -2,6 +2,9 @@ let currentUser = '';
 let currentGroup = null;
 let groups = {};
 let messages = {};
+let deleteMsgMode = false;
+let deleteGroupMode = false;
+let pendingDelete = null; // Para guardar qué se va a eliminar
 
 window.onload = function() {
     const username = localStorage.getItem('username');
@@ -14,8 +17,56 @@ window.onload = function() {
     if (savedGroups) groups = JSON.parse(savedGroups);
     if (savedMessages) messages = JSON.parse(savedMessages);
 
+// Evento para modo eliminar mensajes
+    document.getElementById('deleteMsgModeBtn').addEventListener('click', toggleDeleteMsgMode);
+    
+    // Evento para modo eliminar grupos
+    document.getElementById('deleteGroupModeBtn').addEventListener('click', toggleDeleteGroupMode);
+    
+    // Click en lista de grupos
+    document.getElementById('groupsList').addEventListener('click', handleGroupClick);
+    
+    // Click en mensajes
+    document.getElementById('messagesContainer').addEventListener('click', handleMessageClick);
+
+ // Confirmar eliminación
+    document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+        if (!pendingDelete) return;
+        
+        if (pendingDelete.type === 'message') {
+            // Eliminar mensaje
+            messages[currentGroup].splice(pendingDelete.index, 1);
+            saveData();
+            renderMessages();
+        } else if (pendingDelete.type === 'group') {
+            // Eliminar grupo
+            const groupId = pendingDelete.id;
+            delete groups[groupId];
+            delete messages[groupId];
+            saveData();
+            
+            if (currentGroup === groupId) {
+                currentGroup = null;
+                document.getElementById('chatHeader').querySelector('span').textContent = 'Selecciona un grupo';
+                document.getElementById('messagesContainer').innerHTML = '<p class="empty-chat">Selecciona un grupo para comenzar a chatear</p>';
+                document.getElementById('inputContainer').style.display = 'none';
+            }
+
     renderGroups();
+}
+// Cerrar modal
+        document.getElementById('confirmDeleteModal').classList.remove('active');
+        pendingDelete = null;
+    });
+
+    // Cancelar eliminación
+    document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+        document.getElementById('confirmDeleteModal').classList.remove('active');
+        pendingDelete = null;
+    });
+    renderGroups(); // Mostrar grupos al cargar
 };
+
 
 // Guardar datos en localStorage
 function saveData() {
@@ -31,10 +82,63 @@ function renderGroups() {
 
     list.innerHTML = userGroups.map(id => {
         const group = groups[id];
-        return `<div class="group-item ${currentGroup===id ? 'active' : ''}" onclick="selectGroup('${id}')">
-            ${group.name}
+         return `<div class="group-item ${currentGroup===id ? 'active' : ''} ${deleteGroupMode ? 'delete-mode' : ''}" data-group="${id}">
+        <span>${group.name}</span> 
         </div>`;
     }).join('');
+}
+
+// Modo eliminar MENSAJES
+function toggleDeleteMsgMode() {
+    deleteMsgMode = !deleteMsgMode;
+    document.getElementById('deleteMsgModeBtn').classList.toggle('active');
+    document.getElementById('deleteIndicator').style.display = deleteMsgMode ? 'block' : 'none';
+    
+    const messagesList = document.querySelectorAll('.message');
+    messagesList.forEach(msg => {
+        if (deleteMsgMode) {
+            msg.classList.add('delete-mode');
+        } else {
+            msg.classList.remove('delete-mode');
+        }
+    });
+}
+
+// Modo eliminar GRUPOS
+function toggleDeleteGroupMode() {
+    deleteGroupMode = !deleteGroupMode;
+    document.getElementById('deleteGroupModeBtn').classList.toggle('active');
+    renderGroups();
+}
+
+// Manejar click en grupos
+function handleGroupClick(e) {
+    const groupItem = e.target.closest('.group-item');
+    if (!groupItem) return;
+    
+    const groupId = groupItem.dataset.group;
+    
+    if (deleteGroupMode) {
+        // ELIMINAR grupo
+        pendingDelete = {type: 'group', id: groupId};
+        document.getElementById('confirmDeleteMessage').textContent = 
+            `¿Estás seguro de eliminar el grupo "${groups[groupId].name}"? Se perderán todos los mensajes.`;
+        document.getElementById('confirmDeleteModal').classList.add('active');
+    } else {
+        // SELECCIONAR grupo
+        selectGroup(groupId);
+    }
+}
+
+// Manejar click en mensajes
+function handleMessageClick(e) {
+    const message = e.target.closest('.message');
+    if (!message || !deleteMsgMode) return;
+    
+    const index = parseInt(message.dataset.index);
+    pendingDelete = {type: 'message', index: index};
+    document.getElementById('confirmDeleteMessage').textContent = '¿Estás seguro de eliminar este mensaje?';
+    document.getElementById('confirmDeleteModal').classList.add('active');
 }
 
 // Seleccionar grupo
@@ -42,7 +146,7 @@ function selectGroup(id) {
     currentGroup = id;
     renderGroups();
     renderMessages();
-    document.getElementById('chatHeader').textContent = groups[id].name;
+    document.getElementById('chatHeader').querySelector('span').textContent = groups[id].name;
     document.getElementById('inputContainer').style.display = 'flex';
 }
 
@@ -55,8 +159,8 @@ function renderMessages() {
         return;
     }
 
-    container.innerHTML = msgs.map(m => `
-        <div class="message ${m.sender===currentUser?'sent':'received'}">
+    container.innerHTML = msgs.map((m, index) => `
+    <div class="message ${m.sender===currentUser?'sent':'received'} ${deleteMsgMode ? 'delete-mode' : ''}" data-index="${index}">
             <strong>${m.sender}</strong>: ${m.text}
         </div>
     `).join('');
