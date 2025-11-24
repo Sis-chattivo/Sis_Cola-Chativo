@@ -1,4 +1,6 @@
-// Alternar entre mostrar y ocultar la contraseña
+
+import { supabaseClient } from "./database.js";// Alternar entre mostrar y ocultar la contraseña
+
 document.getElementById('togglePassword').addEventListener('click', function() {
     const passwordInput = document.getElementById('password');
     const icon = this.querySelector('svg');
@@ -21,35 +23,41 @@ document.getElementById('togglePassword').addEventListener('click', function() {
     }
 });
 
-document.getElementById('loginForm').addEventListener('submit', function(e) {
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
+    
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
     
     // Verificar que usuario y contraseña terminen en "dev"
-    if (!username.endsWith('dev') || !password.endsWith('dev')) {
+    if (!username || !password) {
+        showError('Debe completar todos los campos.');
+        return;
+    }
+
+// Buscar usuario en Supabase tabla 'personal'
+    const { data, error } = await supabaseClient
+        .from('personal')
+        .select('*')
+        .eq('usuario', username)
+        .eq('password', password)
+        .maybeSingle();
+
+
+console.log("DATA:", data);
+console.log("ERROR:", error);
+
+    
+    if (error || !data) {
         showError('Usuario o contraseña incorrectos.');
         return;
     }
-    
-    // Obtener usuarios registrados
-    const users = JSON.parse(localStorage.getItem('users') || '{}');
-    
-    // Si el usuario ya existe, verificar contraseña
-    if (users[username]) {
-        if (users[username] === password) {
-            localStorage.setItem('username', username);
-            window.location.href = 'main.html';
-        } else {
-            showError('Contraseña incorrecta.');
-        }
-    } else {
-        // Nuevo usuario: registrar con esta contraseña
-        users[username] = password;
-        localStorage.setItem('users', JSON.stringify(users));
-        localStorage.setItem('username', username);
-        window.location.href = 'main.html';
-    }
+
+    // Guardar sesión
+    localStorage.setItem('username', username);
+
+    // Redirigir
+    window.location.href = 'main.html';
 });
 
 function showError(message) {
