@@ -17,6 +17,11 @@
 
     <div class="main-container">
         <aside class="sidebar">
+             <div class="sidebar-header">
+        <h3>Grupos</h3>
+        <button class="delete-mode-btn" id="deleteGroupModeBtn" title="Eliminar grupos">🗑️</button>
+    </div>   
+            
             <input type="text" id="searchBox" placeholder="Buscar grupo">
             <div id="groupsList"></div>
             <button id="createGroupBtn">Crear Grupo</button>
@@ -24,7 +29,10 @@
         </aside>
 
         <section class="chat-container">
-            <div class="chat-header" id="chatHeader">Selecciona un grupo</div>
+          <div class="chat-header" id="chatHeader">
+        <span>Selecciona un grupo</span>
+        <button class="delete-mode-btn" id="deleteMsgModeBtn" title="Eliminar mensajes">🗑️</button>
+    </div>
             <div class="messages-container" id="messagesContainer">
                 <p class="empty-chat">Selecciona un grupo para comenzar a chatear</p>
             </div>
@@ -46,5 +54,18 @@
     </div>
 
     <script src="../js/main.js"></script>
+     <!-- Modal de confirmación para eliminar -->
+<div class="modal" id="confirmDeleteModal">
+    <div class="modal-content">
+        <h2 style="color: #e74c3c;">⚠️ Confirmar Eliminación</h2>
+        <p id="confirmDeleteMessage">¿Estás seguro de eliminar este elemento?</p>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button id="confirmDeleteBtn" style="background: #95a5a6;">Eliminar</button>
+            <button id="cancelDeleteBtn" style="background: #999;">Cancelar</button>
+        </div>
+    </div>
+</div>  
+     
+    
 </body>
 </html>
